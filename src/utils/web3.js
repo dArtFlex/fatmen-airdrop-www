@@ -21,7 +21,7 @@ const claimFatmenDafAddress = contractAddress['__ropsten'].claimFatmenDaf;
 const tokenMetaiAddress = contractAddress['__ropsten'].erc20Metai;
 const chainId = chain['__ropsten'];
 
-const testWallet = '0x49a4C27EB3FD892557BaA884909195a8C80ffcC6';
+const testWallets = ['0x5c763f9C2111a61e154d0A05a526E332c12957CE'];
 const cost = "50000000000000000";
 
 const providerOptions = {
@@ -98,7 +98,7 @@ export const claim = async () => {
     await addToken(tokenAddress);
   
     const acc = (await web3.eth.getAccounts())[0];
-    const guard = [...whiteWallets, testWallet].some((wAcc) => wAcc.toLowerCase() === acc.toLowerCase())
+    const guard = [...whiteWallets, ...testWallets].some((wAcc) => wAcc.toLowerCase() === acc.toLowerCase())
     if (guard) {
       await contract.methods.Claim(acc).send({ from: acc, to: claimFatmenDafAddress, })
       toast.success("The claim has been succeeded!");
@@ -174,7 +174,7 @@ export const addToken = async (address) => {
   }
 } 
 
-export const getDafOnInfo = async (dafAvailableRef = null, claimEnableRef = null, claimAmountRef = null, claimCountRef  = null) => {
+export const getDafOnInfo = async (dafAvailableRef = null, claimEnableRef = null, claimAmountRef = null, claimCountRef  = null, setDisable) => {
   try {
     const getInfo = async () => {
       provider = await web3Modal.connect();
@@ -191,15 +191,18 @@ export const getDafOnInfo = async (dafAvailableRef = null, claimEnableRef = null
       if (balanceOfDaf && decimals) {
         dafAvailableRef.current.innerHTML = new BigNumber(balanceOfDaf).div(10 ** decimals).toString();
       }
-    
-      const enableToClaim = await contract.methods.ClaimCheckEnable(acc).call();
-      claimEnableRef.current.innerHTML = enableToClaim;
+
+      const alreadyClaimed = await contract.methods.Sended(acc).call();
+      const alreadyClaimedAmount = new BigNumber(alreadyClaimed).div(10 ** decimals).toString();
+      claimCountRef.current.innerHTML = alreadyClaimedAmount;
     
       const availableToClaim = await contract.methods.ClaimCheckAmount(acc).call();
-      claimAmountRef.current.innerHTML = availableToClaim;
-    
-      const claimCount = await contract.methods.ClaimCount().call();
-      claimCountRef.current.innerHTML = claimCount;
+      claimAmountRef.current.innerHTML = availableToClaim - alreadyClaimedAmount;
+
+      const enable = Boolean(availableToClaim - alreadyClaimedAmount);
+      claimEnableRef.current.innerHTML = enable;
+
+      setDisable(enable);
     }
 
     getInfo();

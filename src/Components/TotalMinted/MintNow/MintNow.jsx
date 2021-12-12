@@ -272,6 +272,7 @@ const Quantity = styled.div`
 
 export default function MintNow({ setVisibleCallback }) {
   const [visible, setVisible] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const ref = useRef();
   const parentRef = useRef();
@@ -286,7 +287,7 @@ export default function MintNow({ setVisibleCallback }) {
       await getMinted(mintedRef);
     };
     const asyncGetDafOnInfo = async () => {
-      await getDafOnInfo(dafAvailableRef, claimEnableRef, claimAmountRef, claimCountRef);
+      await getDafOnInfo(dafAvailableRef, claimEnableRef, claimAmountRef, claimCountRef, setDisable);
     };
 
     asyncGetDafOnInfo();
@@ -322,13 +323,13 @@ export default function MintNow({ setVisibleCallback }) {
         </ImageBox>
         <ImageBox>
           <div>Your DAF Amount:</div>
-          <div style={{ color: "#28a745" }} ref={claimAmountRef}>500</div>
+          <div style={{ color: "#28a745" }} ref={claimAmountRef}>0</div>
         </ImageBox>
         <ImageBox>
           <div>Already Claimed:</div>
           <div style={{ color: "#6c757d" }} ref={claimCountRef}>0</div>
         </ImageBox>
-        <StyledMintButton style={{ width: '100%' }} onClick={claim}>Claim</StyledMintButton>
+        {disable && <StyledMintButton style={{ width: '100%' }} onClick={claim} >Claim</StyledMintButton>}
       </StyledButtons>
       <Quantity visible={visible}>
         total minted:{" "}
