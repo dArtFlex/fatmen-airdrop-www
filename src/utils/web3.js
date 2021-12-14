@@ -5,6 +5,7 @@ import JSBI from "jsbi";
 import { contractAddress } from '../contracts/addresses'
 import abiClaimFatmenDaf from '../contracts/abi/claimFatmenDaf.json'
 import abiStandardToken from '../contracts/abi/standardToken.json'
+import abiCryptoFatmenClub from '../contracts/abi/сryptoFatmenClub.json'
 import BigNumber from 'bignumber.js'
 import { whiteWallets } from './whitewallets'
 import { toast } from 'react-toastify';
@@ -24,6 +25,7 @@ const chain = {
 
 const claimFatmenDafAddress = contractAddress['__eth'].claimFatmenDaf;
 const tokenMetaiAddress = contractAddress['__eth'].erc20Metai;
+const сryptoFatmenClubAddress = contractAddress['__eth'].сryptoFatmenClub;
 const chainId = chain['__eth'];
 
 const testWallets = []; // Should be an array with a strings
@@ -223,12 +225,11 @@ export const getDafOnInfo = async (dafAvailableRef = null, claimEnableRef = null
 export const getMinted = async (ref = null) => {
   provider = await web3Modal.connect();
   web3 = new Web3(provider);
-  const contract = new web3.eth.Contract(abiStandardToken, tokenMetaiAddress);
+  const contract = new web3.eth.Contract(abiCryptoFatmenClub, сryptoFatmenClubAddress);
 
   const getTotalSupply = async () => {
-    const decimals = await contract.methods.decimals().call();
     const totalSupply = await contract.methods.totalSupply().call();
-    ref.current.innerHTML = totalSupply / 10 ** +decimals;
+    ref.current.innerHTML = totalSupply;
   }
 
   getTotalSupply();

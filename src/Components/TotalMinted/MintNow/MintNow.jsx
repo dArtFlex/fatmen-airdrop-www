@@ -332,7 +332,7 @@ export default function MintNow({ setVisibleCallback }) {
         {disable && <StyledMintButton style={{ width: '100%' }} onClick={claim} >Claim</StyledMintButton>}
       </StyledButtons>
       <Quantity visible={visible}>
-        total minted:{" "}
+        TOTAL FATMEN MINTED:{" "}
         <span style={{ color: "#ee4646" }}>
           <span ref={mintedRef}>0</span>
         </span>
