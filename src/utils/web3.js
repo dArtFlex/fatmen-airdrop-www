@@ -15,20 +15,25 @@ const chain = {
     id: 3,
     idHex: '0x3',
   },
+  __eth: {
+    network: "ethereum",
+    id: 1,
+    idHex: '0x1',
+  }
 };
 
-const claimFatmenDafAddress = contractAddress['__ropsten'].claimFatmenDaf;
-const tokenMetaiAddress = contractAddress['__ropsten'].erc20Metai;
-const chainId = chain['__ropsten'];
+const claimFatmenDafAddress = contractAddress['__eth'].claimFatmenDaf;
+const tokenMetaiAddress = contractAddress['__eth'].erc20Metai;
+const chainId = chain['__eth'];
 
-const testWallets = ['0x5c763f9C2111a61e154d0A05a526E332c12957CE'];
+const testWallets = []; // Should be an array with a strings
 const cost = "50000000000000000";
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: process.env.INFURA_KEY // required
+      infuraId: process.env.INFURA_KEY_MAINNET // required
     }
   }
 };

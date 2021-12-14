@@ -1,7 +1,7 @@
 export const contractAddress = {
   __eth: {
-    claimFatmenDaf: '',
-    erc20Metai: '',
+    claimFatmenDaf: '0x7C0047b6fF4735afc636837A0A41F4e1B342720D',
+    erc20Metai: '0x255d578049b0Cc729dceC2F12Fa59867Eb0eCECB',
   },
 
   __ropsten: {
